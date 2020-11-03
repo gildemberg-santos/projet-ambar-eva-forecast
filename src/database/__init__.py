@@ -1,4 +1,4 @@
-# climatempo.py
+# __init__.py
 #
 # Copyright 2020 Gildemberg Santos <gildemberg.santos@gmail.com>
 #
@@ -17,18 +17,4 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-
-from src.json.json import Json
-
-
-class ClimaTempo:
-    def __init__(self):
-        self.token = "b22460a8b91ac5f1d48f5b7029891b53" # token da api
-        self.urlbase = "http://apiadvisor.climatempo.com.br/api/v1/"
-
-    def get_cidade(self, id_cidade : int):
-        json = Json()
-        url="{0}forecast/locale/{1}/days/15?token={2}".format(self.urlbase, id_cidade, self.token)
-        dados = json.get_json(url=url)
-        return dados
 

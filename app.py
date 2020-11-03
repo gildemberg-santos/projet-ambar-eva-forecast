@@ -1,4 +1,5 @@
 #! /bin/python3.9
+# -*- coding: utf-8 -*-
 # app.py
 #
 # Copyright 2020 Gildemberg Santos <gildemberg.santos@gmail.com>
@@ -20,7 +21,7 @@
 
 
 from flask import Flask, request
-from src.apiadvisor.climatempo import ClimaTempo
+from src.negocio.negocioCidade import NegocioCidade
 
 
 app = Flask(__name__)
@@ -29,26 +30,20 @@ app = Flask(__name__)
 def home():
     return "olá mundo!"
 
-@app.route('/country/<country>', methods=['GET'])
-def pais(country):
-    api = ClimaTempo()
-    try:
-        dados = api.get_pais()
-        if not dados:
-            raise
-        return dados
-    except Exception:
-        return "Por favor, tente mais tarde!"
-
-
 @app.route('/cidade', methods=['GET'])
 def cidade():
-    api = ClimaTempo()
     try:
+        negCid = NegocioCidade()
         post_id = int(request.args.get("id"))
-        dados = api.get_cidade(id_cidade=post_id)
-        if not dados:
-            raise
-        return dados
-    except Exception:
+        negCid.addCidade(_id=post_id)
+        return "Cadastrado com sucesso!"
+    except Exception as e:
+        print(e)
         return "Por favor, informe um id valido!"
+
+@app.route('/analise', methods=['GET'])
+def analise():
+    data_inicial = str(request.args.get("data_inicial"))
+    data_final = str(request.args.get("data_final"))
+
+    return "data_inicial {0} | data_final {1}".format(data_inicial, data_final)
