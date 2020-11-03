@@ -45,5 +45,4 @@ def cidade():
 def analise():
     data_inicial = str(request.args.get("data_inicial"))
     data_final = str(request.args.get("data_final"))
-
     return "data_inicial {0} | data_final {1}".format(data_inicial, data_final)

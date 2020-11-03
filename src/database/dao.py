@@ -86,13 +86,13 @@ class Dao(object):
         try:
             conn = ConectionSQLite()
             conn.openConnection()
-            sql = "SELECT MAX(temperatura_max) FROM tbCidade".format(_id, data)
+            sql = "SELECT MAX(temperatura_max) FROM tbCidade"
             _listTemp = conn.getInformation(sql=sql)
             conn.closeConnection()
             cid = EntidadeCidade()
             if len(_listTemp) == 0:
                 raise
-            return _listTemp[0]
+            return int(_listTemp[0][0])
         except Exception as e:
             print(e)
             return None
