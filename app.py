@@ -54,7 +54,6 @@ def analise():
         response = make_response(_json)
         response.content_type = "application/json"
         return (response, 200)
-
     except Exception as e:
         print(e)
         return ("Por favor, informe um periodo valido!", 404)
