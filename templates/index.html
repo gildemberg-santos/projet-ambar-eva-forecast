@@ -1,0 +1,24 @@
+<html>
+    <head>
+        <title>{{ title }}</title>
+        <link rel="shortcut icon" type="imagem/x-icon" href="{{ url_for('static', filename='favicon.ico') }}"/>
+        <script language="JavaScript" type="text/javascript" src="{{ url_for('static', filename='mascara.js') }}"></script>
+    </head>
+    <body>
+        <h1>{{ titleapp }}</h1>
+        <form method="get" action="/cidade">
+          <label>Cadastrar Novas Cidades</label>
+          <br/>
+          <input type="text" name="id" placeholder="ID DA CIDADE"/>
+          <input type="submit" name="salvar" value="SALVAR"/>
+        </form>
+
+        <form method="get" action="/analise">
+          <label>Analises</label>
+          <br/>
+          <input type="text" id="data_inicial" name="data_inicial" placeholder="DATA INICIAL ex: 00/00/0000" maxlength="10" onkeypress="mascara(this,data)"/>
+          <input type="text" id="data_final" name="data_final" placeholder="DATA FINAL ex: 00/00/0000" maxlength="10" onkeypress="mascara(this,data)"/>
+          <input type="submit" name="pesquisar" value="PESQUISAR" />
+        </form>
+    </body>
+</html>

@@ -32,29 +32,33 @@ class Dao(object):
         except Exception as e:
             print(e)
 
-    def getCidadeData(self, data_inicial: str, data_final: str):
+    def getCidadeMediaPrec(self, data_inicial: str, data_final: str):
         try:
             conn = ConectionSQLite()
             conn.openConnection()
-            sql = "SELECT * FROM tbCidade WHERE data BETWEEN '{0}' and '{1}'"
+            sql = "SELECT AVG(precipitacao) FROM tbCidade WHERE data BETWEEN '{0}' and '{1}'".format(data_inicial, data_final)
             _listTemp = conn.getInformation(sql=sql)
             conn.closeConnection()
-            cid = EntidadeCidade()
-            for item in _listTemp:
-                cid.id = item[0]
-                cid.idApi = item[1]
-                cid.nome = item[2]
-                cid.estado = item[3]
-                cid.pais = item[4]
-                cid.data = item[5]
-                cid.probabilidade = item[6]
-                cid.precipitacao = item[7]
-                cid.temperatura_min = item[8]
-                cid.temperatura_max = item[9]
-                _list.append(cid)
-            return _list
+            if len(_listTemp) == 0:
+                raise
+            return float(_listTemp[0][0])
         except Exception as e:
             print(e)
+            return None
+
+    def getCidadeTempMax(self, data_inicial: str, data_final: str):
+        try:
+            conn = ConectionSQLite()
+            conn.openConnection()
+            sql = "SELECT MAX(temperatura_max) FROM tbCidade WHERE data BETWEEN '{0}' and '{1}'".format(data_inicial, data_final)
+            _listTemp = conn.getInformation(sql=sql)
+            conn.closeConnection()
+            if len(_listTemp) == 0:
+                raise
+            return int(_listTemp[0][0])
+        except Exception as e:
+            print(e)
+            return None
 
     def getCidadeIdApiDate(self, _id : int, data: str):
         try:
@@ -82,22 +86,7 @@ class Dao(object):
             print(e)
             return None
 
-    def getCidadeTempMax(self):
-        try:
-            conn = ConectionSQLite()
-            conn.openConnection()
-            sql = "SELECT MAX(temperatura_max) FROM tbCidade"
-            _listTemp = conn.getInformation(sql=sql)
-            conn.closeConnection()
-            cid = EntidadeCidade()
-            if len(_listTemp) == 0:
-                raise
-            return int(_listTemp[0][0])
-        except Exception as e:
-            print(e)
-            return None
-
-    def addCidade(self, values=EntidadeCidade()):
+    def addCidade(self, values: EntidadeCidade):
         try:
             conn = ConectionSQLite()
             conn.openConnection()
@@ -108,3 +97,13 @@ class Dao(object):
         except Exception as e:
             print(e)
 
+    def toEditCidade(self, values: EntidadeCidade):
+        try:
+            conn = ConectionSQLite()
+            conn.openConnection()
+            sql = "UPDATE tbCidade SET probabilidade=?, precipitacao=?, temperatura_min=?, temperatura_max=? WHERE idApi=={0} AND data=='{1}'".format(values.idApi, values.data)
+            val = (values.probabilidade, values.precipitacao, values.temperatura_min, values.temperatura_max)
+            conn.setInformation(sql=sql, val=val)
+            conn.closeConnection()
+        except Exception as e:
+            print(e) 
